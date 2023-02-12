@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
-import { NavBar } from "ui";
-import { links } from "../data";
+import { NavBar, NavBarLink } from "ui";
 
 export type AppLayoutProps = {
+  links: NavBarLink[];
   children: ReactNode;
 };
 
-export default function AppLayout({ children }: AppLayoutProps) {
+export default function AppLayout({ links, children }: AppLayoutProps) {
   return (
     <>
       <NavBar links={links} />

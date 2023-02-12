@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "data": "workspace:*",
     "docs": "workspace:*",
     "home": "workspace:*",
+    "layouts": "workspace:*",
     "next": "^13.1.1",
     "next-ui-wrapper": "workspace:*",
     "react": "18.2.0",
