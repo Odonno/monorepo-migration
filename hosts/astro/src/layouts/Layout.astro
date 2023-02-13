@@ -1,9 +1,8 @@
 ---
 import AppLayout from "layouts/AppLayout";
-import Home from "home/pages";
 import { navBarLinks } from "data";
 ---
 
 <AppLayout links={navBarLinks}>
-  <Home />
+  <slot />
 </AppLayout>
