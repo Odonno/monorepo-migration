@@ -11,9 +11,4 @@ export const navBarLinks: NavBarLink[] = [
     href: "/counter",
     children: "Counter",
   },
-  {
-    key: "/docs",
-    href: "/docs",
-    children: "Docs",
-  },
 ];

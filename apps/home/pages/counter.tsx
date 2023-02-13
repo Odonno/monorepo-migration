@@ -16,8 +16,8 @@ export default function Counter() {
     <div>
       <h1>Counter</h1>
       <p>Current value: {value}</p>
-      <Button onClick={onIncrementButtonClicked}>Increment</Button>
-      <Button onClick={onDecrementButtonClicked}>Decrement</Button>
+      <Button label="Increment" onClick={onIncrementButtonClicked} />
+      <Button label="Decrement" onClick={onDecrementButtonClicked} />
     </div>
   );
 }

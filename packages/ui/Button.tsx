@@ -1,12 +1,8 @@
-import { ReactNode } from "react";
-
 export type ButtonProps = {
   onClick?: () => void;
-  children: ReactNode;
+  label: string;
 };
 
-export const Button = (props: ButtonProps) => {
-  const { onClick, children } = props;
-
-  return <button onClick={onClick}>{children}</button>;
+export const Button = ({ label, ...props }: ButtonProps) => {
+  return <button {...props}>{label}</button>;
 };
