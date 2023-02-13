@@ -1,8 +1,16 @@
 ---
+import '../styles/global.css';
 import AppLayout from "layouts/AppLayout";
 import { navBarLinks } from "data";
+import { Banner } from "ui";
 ---
 
-<AppLayout links={navBarLinks}>
-  <slot />
-</AppLayout>
+<html>
+  <body>
+    <Banner label="Astro host" variant="violet" />
+
+    <AppLayout links={navBarLinks}>
+      <slot />
+    </AppLayout>
+  </body>
+</html>

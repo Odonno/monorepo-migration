@@ -88,6 +88,7 @@ importers:
       layouts: workspace:*
       react: ^18.0.0
       react-dom: ^18.0.0
+      ui: workspace:*
     dependencies:
       '@astrojs/react': 2.0.2_ffd5foczrxyy7gyjqbwgwcqlbq
       '@types/react': 18.0.28
@@ -98,6 +99,7 @@ importers:
       layouts: link:../../packages/layouts
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      ui: link:../../packages/ui
 
   hosts/nextjs:
     specifiers:

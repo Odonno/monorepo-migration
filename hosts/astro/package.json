@@ -18,6 +18,7 @@
     "home": "workspace:*",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "layouts": "workspace:*"
+    "layouts": "workspace:*",
+    "ui": "workspace:*"
   }
 }
