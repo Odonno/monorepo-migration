@@ -31,6 +31,7 @@ importers:
       react: ^18.2.0
       react-dom: ^18.2.0
       serve: ^13.0.4
+      storybook-addon-mock: ^3.2.0
       typescript: ^4.9.3
       ui: workspace:*
       vite: ^4.1.0
@@ -54,6 +55,7 @@ importers:
       '@vitejs/plugin-react': 3.1.0_vite@4.1.1
       eslint-config-custom: link:../../packages/eslint-config-custom
       serve: 13.0.4
+      storybook-addon-mock: 3.2.0_sfykwaolfeirobf64hp5z5qyae
       typescript: 4.9.5
       vite: 4.1.1
 
@@ -10363,6 +10365,11 @@ packages:
     hasBin: true
     dev: true
 
+  /mock-xmlhttprequest/7.0.4:
+    resolution: {integrity: sha512-hA0fIHy/74p5DE0rdmrpU0sV1U+gnWTcgShWequGRLy0L1eT+zY0ozFukawpLaxMwIA+orRcqFRElYwT+5p81A==}
+    engines: {node: '>=10.0.0'}
+    dev: true
+
   /move-concurrently/1.0.1:
     resolution: {integrity: sha512-hdrFxZOycD/g6A6SoI2bB5NA/5NEqD0569+S47WZhPvm46sD50ZHdYaFmnua5lndde9rCHGjmfK7Z8BuCt/PcQ==}
     dependencies:
@@ -11112,7 +11119,6 @@ packages:
 
   /path-to-regexp/6.2.1:
     resolution: {integrity: sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==}
-    dev: false
 
   /path-type/1.1.0:
     resolution: {integrity: sha512-S4eENJz1pkiQn9Znv33Q+deTOKmbl+jj1Fl+qiP/vYezj+S8x+J3Uo0ISrx/QoEvIlOaDWJhPaRd1flJ9HXZqg==}
@@ -12777,6 +12783,32 @@ packages:
 
   /store2/2.14.2:
     resolution: {integrity: sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==}
+    dev: true
+
+  /storybook-addon-mock/3.2.0_sfykwaolfeirobf64hp5z5qyae:
+    resolution: {integrity: sha512-LaggsF/6Lt0AyHiotIEVQpwKfIiZ3KsNqtdXKVnIdOetjaD7GaOQeX0jIZiZUFX/i6QLmMuNoXFngqqkdVtfSg==}
+    peerDependencies:
+      '@storybook/addons': ^6.4.0
+      '@storybook/api': ^6.4.0
+      '@storybook/components': ^6.4.0
+      '@storybook/theming': ^6.4.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      '@storybook/addons': 6.5.16_biqbaboplfbrettd7655fr4n2y
+      '@storybook/api': 6.5.16_biqbaboplfbrettd7655fr4n2y
+      '@storybook/components': 6.5.16_biqbaboplfbrettd7655fr4n2y
+      '@storybook/theming': 6.5.16_biqbaboplfbrettd7655fr4n2y
+      mock-xmlhttprequest: 7.0.4
+      path-to-regexp: 6.2.1
+      polished: 4.2.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: true
 
   /stream-browserify/2.0.2:
