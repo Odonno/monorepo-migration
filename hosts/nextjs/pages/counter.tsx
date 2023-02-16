@@ -1,3 +1,1 @@
-import Counter from "home/pages/counter";
-
-export default Counter;
+export { default } from "home/pages/counter";

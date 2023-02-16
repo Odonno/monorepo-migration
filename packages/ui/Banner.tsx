@@ -14,6 +14,7 @@ export const Banner = ({ label, variant }: BannerProps) => {
         textAlign: "center",
         padding: "10px",
         fontSize: "13px",
+        fontWeight: "bold",
       }}
     >
       {label}

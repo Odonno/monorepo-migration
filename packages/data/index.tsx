@@ -11,4 +11,9 @@ export const navBarLinks: NavBarLink[] = [
     href: "/counter",
     children: "Counter",
   },
+  {
+    key: "/game",
+    href: "/game",
+    children: "Game",
+  },
 ];
