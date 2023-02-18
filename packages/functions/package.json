@@ -1,8 +1,12 @@
 {
   "name": "functions",
   "version": "0.0.0",
-  "main": "./index.tsx",
-  "types": "./index.tsx",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./api/game": "./api/game.ts"
+  },
   "license": "MIT",
   "scripts": {
     "lint": "eslint *.ts*"
