@@ -1,25 +1,11 @@
 import type { APIRoute } from "astro";
-
-const USER_VALUE = "X" as const;
-const COMPUTER_VALUE = "O" as const;
-
-type Cell = {
-  x: number;
-  y: number;
-  value?: typeof USER_VALUE | typeof COMPUTER_VALUE;
-};
-
-type Grid = Cell[];
-
-type GridStatus = "won" | "draw" | "lose";
-
-type GridApiResponse = {
-  status?: GridStatus;
-  grid: Grid;
-};
-
-const COLUMNS = [0, 1, 2];
-const ROWS = [0, 1, 2];
+import {
+  COLUMNS,
+  COMPUTER_VALUE,
+  GridApiResponse,
+  ROWS,
+  USER_VALUE,
+} from "data";
 
 const response: GridApiResponse = {
   grid: ROWS.flatMap((y) => {

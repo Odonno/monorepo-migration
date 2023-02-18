@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "ui";
-import type { GridApiResponse } from "../models";
-
-const COLUMNS = [0, 1, 2];
-const ROWS = [0, 1, 2];
+import { COLUMNS, GridApiResponse, ROWS } from "data";
 
 export default function Game() {
   const [state, setState] = useState<GridApiResponse | undefined>();
