@@ -10,4 +10,4 @@ export default {
   },
 } as ComponentMeta<typeof FormsPage>;
 
-export const Home: ComponentStory<typeof FormsPage> = () => <FormsPage />;
+export const Forms: ComponentStory<typeof FormsPage> = () => <FormsPage />;
