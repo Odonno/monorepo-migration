@@ -1,9 +1,14 @@
 export type ButtonProps = {
-  onClick?: () => void;
+  type?: "button" | "submit" | "reset";
   label?: string;
   disabled?: boolean;
+  onClick?: () => void;
 };
 
-export const Button = ({ label, ...props }: ButtonProps) => {
-  return <button {...props}>{label}</button>;
+export const Button = ({ type = "button", label, ...props }: ButtonProps) => {
+  return (
+    <button {...props} type={type}>
+      {label}
+    </button>
+  );
 };
