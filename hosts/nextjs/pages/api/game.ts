@@ -1,78 +1,8 @@
-import {
-  COLUMNS,
-  COMPUTER_VALUE,
-  GridApiResponse,
-  ROWS,
-  USER_VALUE,
-} from "data";
+import { COMPUTER_VALUE, GridApiResponse, USER_VALUE } from "data";
+import { createDefaultGridApiResponse, getWinner } from "functions";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-const response: GridApiResponse = {
-  grid: ROWS.flatMap((y) => {
-    return COLUMNS.map((x) => {
-      return { x, y };
-    });
-  }),
-};
-
-const getWinner = () => {
-  const grid = response.grid;
-
-  const getWinnerInRow = (row: number) => {
-    const rowCells = grid.filter((cell) => cell.y === row);
-
-    if (rowCells.every((cell) => cell.value === USER_VALUE)) {
-      return USER_VALUE;
-    }
-    if (rowCells.every((cell) => cell.value === COMPUTER_VALUE)) {
-      return COMPUTER_VALUE;
-    }
-  };
-
-  const getWinnerInColumn = (column: number) => {
-    const columnCells = grid.filter((cell) => cell.x === column);
-
-    if (columnCells.every((cell) => cell.value === USER_VALUE)) {
-      return USER_VALUE;
-    }
-    if (columnCells.every((cell) => cell.value === COMPUTER_VALUE)) {
-      return COMPUTER_VALUE;
-    }
-  };
-
-  const getWinnerInLeftDiagonal = () => {
-    const diagonalCells = grid.filter((cell) => cell.x === cell.y);
-
-    if (diagonalCells.every((cell) => cell.value === USER_VALUE)) {
-      return USER_VALUE;
-    }
-    if (diagonalCells.every((cell) => cell.value === COMPUTER_VALUE)) {
-      return COMPUTER_VALUE;
-    }
-  };
-
-  const getWinnerInRightDiagonal = () => {
-    const diagonalCells = grid.filter((cell) => cell.x + cell.y === 2);
-
-    if (diagonalCells.every((cell) => cell.value === USER_VALUE)) {
-      return USER_VALUE;
-    }
-    if (diagonalCells.every((cell) => cell.value === COMPUTER_VALUE)) {
-      return COMPUTER_VALUE;
-    }
-  };
-
-  const getWinnerInRows = ROWS.map((row) => getWinnerInRow(row)).find(
-    (winner) => !!winner
-  );
-  const getWinnerInColumns = COLUMNS.map((column) =>
-    getWinnerInColumn(column)
-  ).find((winner) => !!winner);
-  const getWinnerInDiagonals =
-    getWinnerInLeftDiagonal() || getWinnerInRightDiagonal();
-
-  return getWinnerInRows || getWinnerInColumns || getWinnerInDiagonals;
-};
+const response = createDefaultGridApiResponse();
 
 export default function handler(
   req: NextApiRequest,
@@ -107,7 +37,7 @@ export default function handler(
 
     selectedCell.value = USER_VALUE;
 
-    const winner = getWinner();
+    const winner = getWinner(response.grid);
     if (winner === USER_VALUE) {
       response.status = "won";
       res.status(200).json(response);
@@ -134,7 +64,7 @@ export default function handler(
       randomCell.value = COMPUTER_VALUE;
     }
 
-    const winner_2 = getWinner();
+    const winner_2 = getWinner(response.grid);
     if (winner_2 === USER_VALUE) {
       response.status = "won";
       res.status(200).json(response);

@@ -1,10 +1,12 @@
 export const USER_VALUE = "X" as const;
 export const COMPUTER_VALUE = "O" as const;
 
+export type CellValue = typeof USER_VALUE | typeof COMPUTER_VALUE;
+
 export type Cell = {
   x: number;
   y: number;
-  value?: typeof USER_VALUE | typeof COMPUTER_VALUE;
+  value?: CellValue;
 };
 
 export type Grid = Cell[];

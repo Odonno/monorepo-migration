@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "data": "workspace:*",
+    "functions": "workspace:*",
     "home": "workspace:*",
     "layouts": "workspace:*",
     "next": "^13.1.1",
