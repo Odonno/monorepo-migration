@@ -6,20 +6,17 @@ import { convertApiResponse } from "../../functions/api";
 const response = createDefaultGridApiResponse();
 
 export const all: APIRoute = async ({ request }) => {
-  if (request.method === "GET") {
-    return convertApiResponse(GameApi.get(response));
+  switch (request.method) {
+    case "GET":
+      return convertApiResponse(GameApi.get(response));
+    case "POST":
+      const body = await request.json();
+      return convertApiResponse(GameApi.post(response, body));
+    case "DELETE":
+      return convertApiResponse(GameApi.del(response));
+    default:
+      return {
+        status: 405,
+      } as Response;
   }
-
-  if (request.method === "POST") {
-    const body = await request.json();
-    return convertApiResponse(GameApi.post(response, body));
-  }
-
-  if (request.method === "DELETE") {
-    return convertApiResponse(GameApi.del(response));
-  }
-
-  return {
-    status: 405,
-  } as Response;
 };

@@ -10,20 +10,14 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<GridApiResponse>
 ) {
-  if (req.method === "GET") {
-    convertApiResponse(res, GameApi.get(response));
-    return;
+  switch (req.method) {
+    case "GET":
+      convertApiResponse(res, GameApi.get(response));
+    case "POST":
+      convertApiResponse(res, GameApi.post(response, req.body));
+    case "DELETE":
+      convertApiResponse(res, GameApi.del(response));
+    default:
+      res.setHeader("Allow", ["GET", "POST", "DELETE"]).status(405);
   }
-
-  if (req.method === "POST") {
-    convertApiResponse(res, GameApi.post(response, req.body));
-    return;
-  }
-
-  if (req.method === "DELETE") {
-    convertApiResponse(res, GameApi.del(response));
-    return;
-  }
-
-  res.setHeader("Allow", ["GET", "POST", "DELETE"]).status(405);
 }
