@@ -1,73 +1,142 @@
-# Turborepo starter
+# Case study on migrating a front-end application with maximum code reuse
 
-This is an official pnpm starter turborepo.
+With the constant evolution of the JavaScript ecosystem, we see a new way to build a front-end application almost every day, whether it is a new framework or a new pattern/library. A friend of mine asked me this question one day: how do you migrate a live front-end application to take advantage of a new framework without having to rewrite the entire application?
 
-## What's inside?
+## The starting point
 
-This turborepo uses [pnpm](https://pnpm.io) as a package manager. It includes the following packages/apps:
+Let's start with a Next.js application in a mono-repository. We want to migrate our Next.js app to Astro. So our repository will contain the following projects:
 
-### Apps and Packages
+2 hosts projects:
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `eslint-config-custom`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+- `nextjs` a Next.js app
+- `astro` an Astro app
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+2 apps projects:
 
-### Utilities
+- `docs` a documentation web app based on Storybook
+- `home` the web app code used by each host project
 
-This turborepo has some additional tools already setup for you:
+A list of packages underneath:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+- `data` a list of types and constants that can be used throughout the repository
+- `eslint-config-custom` configurations for eslint
+- `functions` a list of functions that can be used throughout the repository
+- `layouts` a list of the layouts used in the pages
+- `next-ui-wrapper` a set of components specific to Next.js (built on top of the ui library)
+- `tsconfig` the default configuration for TypeScript projects
+- `ui` a list of the components used in the app
 
-### Build
+The source code is hosted on GitHub here: https://github.com/Odonno/monorepo-migration
 
-To build all apps and packages, run the following command:
+N.B. This folder structure is for demonstration purposes only. Some parts of this architecture can be added or removed in a more concrete application.
 
-```
-cd my-turborepo
-pnpm run build
-```
+## Stateful apps
 
-### Develop
+This is a simple view of modern web applications, but even with the myriad of frontend frameworks (and now meta-frameworks), we can divide pages into 2 categories: static/stateless pages and stateful pages.
 
-To develop all apps and packages, run the following command:
+Creating and migrating stateless pages is fairly straightforward. However, with stateful pages, we need to take care of the state and make sure we are using the right abstraction instead of being too attached to a framework. Let's look at what can be considered state:
 
-```
-cd my-turborepo
-pnpm run dev
-```
+- Remote states: state from an API call, state persisted in the URL (route or query params)
+- Local states: internal state of a component, in-memory global state within the application (like Redux)
 
-### Remote Caching
+If the in-memory global state makes you too attached to the framework, then the best counter would be to store that state in local storage. That way, any other framework could interpret the data in local storage and "restart" from there.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## Pages migration
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+To make the migration of all the pages of our app as painless as possible, we need to have as little code as possible. Hopefully with Next.js and Astro this will be quite easy.
 
-```
-cd my-turborepo
-pnpm dlx turbo login
+_Reusing a React page component within a Next.js page:_
+
+```ts
+export { default } from "home/pages"; // pages/index.tsx
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+_Reusing a React page component within an Astro page:_
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
+```astro
+---
+import Layout from "../layouts/Layout.astro";
+import Home from "home/pages";
+---
 
+<Layout>
+  <Home />
+</Layout>
 ```
-pnpm dlx turbo link
+
+In Astro, this pattern works well for purely static components but if you have dynamic components, you will need to use [template directives](https://docs.astro.build/en/reference/directives-reference/#client-directives).
+
+_Reusing a dynamic React page component within an Astro page:_
+
+```astro
+---
+import Layout from "../layouts/Layout.astro";
+import Forms from "home/pages/forms";
+---
+
+<Layout>
+  <Forms client:load />
+</Layout>
 ```
 
-## Useful Links
+Remember, this is the easy way. Astro provides a more decoupled component structure. You could remove the `home` project that contains the React pages and use React components directly. Or even better, rewrite React components in Astro. This is perfectly fine, but then you are tied to a framework again.
 
-Learn more about the power of Turborepo:
+## API endpoints migration
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Another important feature of meta-framework is the API endpoints. It is also possible to do a soft migration of these, but with a bit more boilerplate code.
+
+Let's start with the Next.js example:
+
+```ts
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<GridApiResponse>
+) {
+  switch (req.method) {
+    case "GET":
+      convertApiResponse(res, GameApi.get(response));
+    case "POST":
+      convertApiResponse(res, GameApi.post(response, req.body));
+    case "DELETE":
+      convertApiResponse(res, GameApi.del(response));
+    default:
+      res.setHeader("Allow", ["GET", "POST", "DELETE"]).status(405);
+  }
+}
+```
+
+The code for each API endpoint is available in a shared package. We still need to map the return value of each API function (`get`, `post`, `del`) using a mapping function called `convertApiResponse`.
+
+```ts
+export const convertApiResponse = <T>(
+  res: NextApiResponse<T>,
+  apiResponse: ApiResponse
+) => {
+  res.status(apiResponse.status || 200).json(apiResponse.response);
+};
+```
+
+This is a special mapping function and it will only work for Next.js. When we work with Astro, we will have to change it a little:
+
+```ts
+export const convertApiResponse = (apiResponse: ApiResponse) => {
+  return {
+    status: apiResponse.status || 200,
+    body: JSON.stringify(apiResponse.response),
+  };
+};
+```
+
+## Going beyond
+
+From what we have seen, migrating a large codebase has become fairly straightforward. Using a mono-repository tool like [turborepo](https://turbo.build/) for this kind of task can open up some possibilities:
+
+- A powerful tool for building and developing complex applications
+- With the right tool (e.g. feature flipping), we can test activating/deactivating a host project in real time, so that we can easily revert to the previous host modelling if required
+- We can even keep the two hosts alive at the same time and choose which page should be rendered by which host, using a load balancer
+
+However, there is still room for improvement, one thing to note is that in order to migrate a large number of pages or API endpoints, we will have to write the same code over and over again… We could imagine a small script that can automatically generate code for pages/api endpoints following the appropriate pattern.
+
+In this article, we have only described one way to accomplish a migration from a React host to a host that supports React. First of all, this is not an article to prove that Astro is better than Next.js, or vice versa. Then we could have chosen another meta-framework that is built on or supports React, such as Remix.
+
+Special thanks to my friend [Jean-Baptiste Vigneron](https://www.jbvigneron.fr).
